@@ -139,7 +139,7 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
   }));
 
   return (
-    <div className="max-w-6xl mx-auto py-10 space-y-6" id="results-page">
+    <div className="max-w-6xl mx-auto py-10 space-y-6 animate-fadeIn" id="results-page">
       <h1 className="text-3xl font-bold">Résultats de la simulation</h1>
 
       {/* button group */}

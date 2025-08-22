@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   return (
-    <section className="py-16 px-4 text-center max-w-6xl mx-auto">
+    <section className="py-16 px-4 text-center max-w-6xl mx-auto fadeInBotom">
       <h2 className="text-3xl font-bold mb-4">
         Simulez la rentabilité de votre bien
       </h2>

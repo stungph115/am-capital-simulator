@@ -36,7 +36,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-12 px-4 space-y-8">
+    <div className="max-w-3xl mx-auto py-12 px-4 space-y-8 animate-fadeIn">
       <h1 className="text-4xl font-bold text-[#121f3e] text-center dark:text-white" >📬 Contactez-nous</h1>
 
       {status === "success" && (

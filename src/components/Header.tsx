@@ -21,7 +21,7 @@ export default function Header() {
 
     return (
         <>
-            <header className="flex flex-col md:flex-row justify-between items-center p-4 shadow bg-white dark:bg-[#1a233a] sticky top-0 z-50">
+            <header className="flex flex-col md:flex-row justify-between items-center p-4 shadow bg-white dark:bg-[#1a233a] sticky top-0 z-50 animate-fadeIn" >
                 <Link href="/">
                     <Image
                         src="/logo AM capital.svg"
@@ -47,11 +47,10 @@ export default function Header() {
                 </div>
             </header>
 
-            <nav className="bg-white dark:bg-[#1a233a] py-2 shadow-sm sticky top-[81px] z-40">
+            <nav className="bg-white dark:bg-[#1a233a] py-2 shadow-sm sticky top-[81px] z-40 animate-fadeIn" >
                 <ul
-                    className={`flex flex-col md:flex-row md:justify-center gap-3 p-4 md:p-0 transition-all ${
-                        menuOpen ? "block" : "hidden md:flex"
-                    }`}
+                    className={`flex flex-col md:flex-row md:justify-center gap-3 p-4 md:p-0 transition-all ${menuOpen ? "block" : "hidden md:flex"
+                        }`}
                 >
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href; // 👈 vérifie si le lien est actif
@@ -59,11 +58,10 @@ export default function Header() {
                             <li key={link.href}>
                                 <Link
                                     href={link.href}
-                                    className={`block px-4 md:py-2 rounded-full transition font-medium min-h-[48px] ${
-                                        isActive
-                                            ? "bg-[#142344] text-white dark:bg-white dark:text-[#142344]"
-                                            : "hover:bg-blue-50 dark:hover:bg-[#22305a] text-gray-700 dark:text-white"
-                                    }`}
+                                    className={`block px-4 md:py-2 rounded-full transition font-medium min-h-[48px] ${isActive
+                                        ? "bg-[#142344] text-white dark:bg-white dark:text-[#142344]"
+                                        : "hover:bg-blue-50 dark:hover:bg-[#22305a] text-gray-700 dark:text-white"
+                                        }`}
                                 >
                                     {link.label}
                                 </Link>

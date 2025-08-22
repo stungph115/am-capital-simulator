@@ -25,7 +25,7 @@ export default async function CityComparisonPage() {
     }));
 
     return (
-        <div className="max-w-6xl mx-auto py-20 space-y-6">
+        <div className="max-w-6xl mx-auto py-20 space-y-6 animate-fadeIn">
             <h1 className="text-3xl font-bold mb-4">Comparaison des loyers par ville</h1>
             <Card>
                 <CardHeader>
