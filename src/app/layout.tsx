@@ -48,24 +48,30 @@ export default function RootLayout({
 
         {/* Navigation par onglets */}
         <nav className="flex justify-center gap-3 bg-white shadow-sm py-3 sticky top-16 z-40">
-          <a
+          <Link
+            href="/"
+            className="px-4 py-2 rounded-full  bg-[#142344] text-white hover:bg-[#1d315e] transition font-medium"
+          >
+            Accueil
+          </Link>
+          <Link
             href="/simulation"
-            className="px-4 py-2 rounded-lg hover:bg-blue-50 transition text-gray-700 font-medium"
+            className="px-4 py-2 rounded-full hover:bg-blue-50 transition text-gray-700 font-medium"
           >
             Simulation
-          </a>
-          <a
+          </Link>
+          <Link
             href="/city-comparison"
-            className="px-4 py-2 rounded-lg hover:bg-blue-50 transition text-gray-700 font-medium"
+            className="px-4 py-2 rounded-full hover:bg-blue-50 transition text-gray-700 font-medium"
           >
             Comparaison villes
-          </a>
-          <a
+          </Link>
+          <Link
             href="/contact"
-            className="px-4 py-2 rounded-lg hover:bg-blue-50 transition text-gray-700 font-medium"
+            className="px-4 py-2 rounded-full hover:bg-blue-50 transition text-gray-700 font-medium"
           >
             Contact
-          </a>
+          </Link>
         </nav>
 
         {/* Main content */}
