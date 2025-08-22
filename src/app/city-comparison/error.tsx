@@ -1,5 +1,4 @@
 "use client"
-// app/city-comparison/error.tsx
 import ErrorMessage from "@/components/ErrorMessage";
 
 export default function Error() {

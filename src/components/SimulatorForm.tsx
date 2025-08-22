@@ -47,6 +47,7 @@ export default function SimulatorForm() {
           data.address.county;
         if (cityName) setCity(cityName);
       } catch (e) {
+        console.error("Erreur de géolocalisation:", e);
         // Ignore l’erreur
       }
       setIsLocating(false);
@@ -75,7 +76,7 @@ export default function SimulatorForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-8 max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg"
+      className="space-y-8 max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg text-[#121f3e]"
     >
       <h2 className="text-2xl font-bold text-center text-[#121f3e] mb-4">Simulateur Immobilier</h2>
 
@@ -129,7 +130,7 @@ export default function SimulatorForm() {
         >
           {propertyTypeOptions.map((opt) => (
             <div key={opt.value} className="flex items-center space-x-2">
-              <RadioGroupItem value={opt.value} id={opt.value} className="border-[#121f3e] checked:bg-[#121f3e]" />
+              <RadioGroupItem value={opt.value} id={opt.value} className="border-[#121f3e] checked:bg-[#121f3e] dark:data-[state=checked]:bg-[#121f3e]" />
               <Label htmlFor={opt.value}>{opt.label}</Label>
             </div>
           ))}
@@ -146,7 +147,8 @@ export default function SimulatorForm() {
         >
           {roomsOptions.map((r) => (
             <div key={r} className="flex items-center space-x-2">
-              <RadioGroupItem value={r} id={r} className="border-[#121f3e] checked:bg-[#121f3e]" />
+              <RadioGroupItem value={r} id={r}
+                className="border-[#121f3e] checked:bg-[#121f3e] dark:data-[state=checked]:bg-[#121f3e]" />
               <Label htmlFor={r}>{r}</Label>
             </div>
           ))}
@@ -163,7 +165,7 @@ export default function SimulatorForm() {
         >
           {typeOptions.map((opt) => (
             <div key={opt.value} className="flex items-center space-x-2">
-              <RadioGroupItem value={opt.value} id={opt.value} className="border-[#121f3e] checked:bg-[#121f3e]" />
+              <RadioGroupItem value={opt.value} id={opt.value} className="border-[#121f3e] checked:bg-[#121f3e] dark:data-[state=checked]:bg-[#121f3e]" />
               <Label htmlFor={opt.value}>{opt.label}</Label>
             </div>
           ))}

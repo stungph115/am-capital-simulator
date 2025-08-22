@@ -144,7 +144,7 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
 
       {/* button group */}
       <div className="flex gap-4 mb-6">
-        <Link href="/simulation" className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+        <Link href="/simulation" className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 dark:text-[#121f3e]">
           ← Retour au formulaire
         </Link>
         <ExportPDFButton />
@@ -194,7 +194,7 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
                 <li>📊 Rendement brut annuel : <b>{(mainResult.grossYield * 100).toFixed(2)} %</b></li>
               </ul>
 
-              <div className="mt-4 p-4 rounded bg-gray-50 text-sm">
+              <div className="mt-4 p-4 rounded bg-gray-50 text-sm dark:text-[#1a233a]">
                 <h3 className="font-semibold mb-2">Comparaison avec {compareLabel}</h3>
                 <ul className="space-y-1">
                   <li>📦 Investissement total : <b>{compareResult.totalInvestment.toLocaleString()} €</b></li>

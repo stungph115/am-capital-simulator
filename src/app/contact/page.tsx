@@ -37,7 +37,7 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-4 space-y-8">
-      <h1 className="text-4xl font-bold text-[#121f3e] text-center">📬 Contactez-nous</h1>
+      <h1 className="text-4xl font-bold text-[#121f3e] text-center dark:text-white" >📬 Contactez-nous</h1>
 
       {status === "success" && (
         <div className="p-4 bg-green-100 text-green-800 rounded shadow">
@@ -50,9 +50,9 @@ export default function ContactPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-xl shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-xl shadow-md dark:text-[#1a233a]">
         <div>
-          <Label htmlFor="name" className="px-1">Nom</Label>
+          <Label htmlFor="name" className="px-1 ">Nom</Label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">👤</span>
             <Input

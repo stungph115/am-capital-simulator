@@ -30,7 +30,7 @@ export default function BreakevenChart({ data }: BreakevenChartProps) {
           <Legend />
           <Line type="monotone" dataKey="Longue durée" stroke="#3b82f6" dot={false} />
           <Line type="monotone" dataKey="Courte durée" stroke="#f59e0b" dot={false} />
-          <Line type="monotone" dataKey={() => 0} stroke="#000" strokeDasharray="5 5" name="Break-even" dot={false} />
+          <Line type="monotone" dataKey={() => 0} stroke="#6b6b6bff" strokeDasharray="5 5" name="Break-even" dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>

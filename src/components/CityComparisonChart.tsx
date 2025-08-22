@@ -1,4 +1,3 @@
-// components/CityComparisonChart.tsx
 "use client";
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -21,7 +20,11 @@ export default function CityComparisonChart({ data }: Props) {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip formatter={(value: number) => `${value?.toLocaleString()} €`} />
-        <Legend />
+        <Legend
+          formatter={(value) =>
+            value === "Apartment" ? "Appartement" : value === "House" ? "Maison" : value
+          }
+        />
         <Bar dataKey="Apartment" fill="#121f3e" />
         <Bar dataKey="House" fill="#2c5282" />
       </BarChart>

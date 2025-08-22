@@ -1,5 +1,3 @@
-// app/simulation/loading.tsx
-
 import Spinner from "@/components/LoadingSpinner";
 
 export default function Loading() {

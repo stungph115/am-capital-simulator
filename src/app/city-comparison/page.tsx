@@ -1,10 +1,8 @@
-// app/city-comparison/page.tsx
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import ErrorMessage from "@/components/ErrorMessage";
 import CityComparisonChart from "@/components/CityComparisonChart";
 
 export default async function CityComparisonPage() {
-    // Example: fetch city rent data from your API
     let cityData: { city: string; apartment: number | null; house: number | null }[] = [];
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
