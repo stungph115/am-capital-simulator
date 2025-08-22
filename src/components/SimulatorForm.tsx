@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cities } from "@/app/api/rent-data/cities";
+import { useEffect } from "react";
 
 const roomsOptions = ["Studio", "T2", "T3", "T4"];
 const typeOptions = [
@@ -27,6 +28,40 @@ export default function SimulatorForm() {
   const [rooms, setRooms] = useState<"Studio" | "T2" | "T3" | "T4">("T2");
   const [type, setType] = useState<"longue" | "courte">("longue");
   const [city, setCity] = useState("Paris");
+  //geolocalisation auto complete city input
+  const [isLocating, setIsLocating] = useState(false);
+
+  useEffect(() => {
+    // Fonction pour obtenir la ville via géolocalisation
+    const fetchCityFromLocation = async (lat: number, lon: number) => {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+        );
+        const data = await res.json();
+        // Essayez de récupérer la ville ou la localité
+        const cityName =
+          data.address.city ||
+          data.address.town ||
+          data.address.village ||
+          data.address.county;
+        if (cityName) setCity(cityName);
+      } catch (e) {
+        // Ignore l’erreur
+      }
+      setIsLocating(false);
+    };
+
+    // Si l'utilisateur accepte la géolocalisation, on tente de récupérer la ville
+    if (isLocating && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          fetchCityFromLocation(pos.coords.latitude, pos.coords.longitude);
+        },
+        () => setIsLocating(false)
+      );
+    }
+  }, [isLocating]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -147,6 +182,14 @@ export default function SimulatorForm() {
           list="cities-list"
           className="border-[#121f3e] focus:ring-[#121f3e]"
         />
+        <Button
+          type="button"
+          onClick={() => setIsLocating(true)}
+          className="bg-[#e5e7eb] hover:bg-[#d1d5db] text-[#121f3e] px-3 py-2 rounded cursor-pointer"
+          title="Détecter ma ville automatiquement"
+        >
+          Géolocalisez-moi
+        </Button>
         <datalist id="cities-list">
           {cities.map((c) => (
             <option key={c.slug} value={c.name} />
@@ -157,7 +200,7 @@ export default function SimulatorForm() {
       {/* Submit */}
       <Button
         type="submit"
-        className="w-full py-3 text-lg font-semibold bg-[#121f3e] hover:bg-[#1b2b50] text-white rounded-lg shadow"
+        className="w-full py-3 text-lg font-semibold bg-[#121f3e] hover:bg-[#1b2b50] text-white rounded-lg shadow cursor-pointer"
       >
         Voir les résultats
       </Button>
