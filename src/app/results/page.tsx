@@ -44,8 +44,8 @@ async function getResults(
   rentPerM2: number,
   nightlyPrice: number | null
 ) {
-  const longue = computeAll({ price, surface, rooms: rooms as any, type: "longue", rentPerM2 });
-  const courte = computeAll({ price, surface, rooms: rooms as any, type: "courte", rentPerM2, nightlyPrice });
+  const longue = computeAll({ price, surface, rooms: rooms, type: "longue", rentPerM2 });
+  const courte = computeAll({ price, surface, rooms: rooms, type: "courte", rentPerM2, nightlyPrice });
   return { longue, courte };
 }
 
