@@ -2,7 +2,7 @@
 
 📊 **Simulateur d’investissement locatif** pour comparer loyers et rendements selon la ville et le type de bien.
 ---
-Démo publique sur : https://am-capital-simulator-4ytt.vercel.app
+Démo publique sur : https://am-capital-simulator-two.vercel.app/
 
 ## Stack technique
 
@@ -90,7 +90,7 @@ Démo publique sur : https://am-capital-simulator-4ytt.vercel.app
 ## Déploiement
 
 Déployé sur Vercel :  
-https://am-capital-simulator-4ytt.vercel.app
+https://am-capital-simulator-two.vercel.app/
 
 Pensez à mettre à jour `NEXT_PUBLIC_BASE_URL` sur Vercel.
 
