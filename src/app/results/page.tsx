@@ -35,11 +35,12 @@ async function getCityData(city: string): Promise<CityDataAPI | null> {
     return null;
   }
 }
+type RoomType = "Studio" | "T2" | "T3" | "T4";
 
 async function getResults(
   price: number,
   surface: number,
-  rooms: string,
+  rooms: RoomType,
   rentPerM2: number,
   nightlyPrice: number | null
 ) {

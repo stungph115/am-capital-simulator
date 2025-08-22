@@ -53,7 +53,7 @@ async function fetchCityRent(city: City) {
         };
     }
 }
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
         const results = await Promise.all(
             cities.map(async (city, i) => {

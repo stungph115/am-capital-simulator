@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import Link from "next/link";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +30,15 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}>
         {/* Header avec badges de confiance */}
         <header className="flex flex-col md:flex-row justify-between items-center p-4 shadow bg-white sticky top-0 z-50">
-          <a href="/">
-            <img
+          <Link href="/">
+            <Image
               src="/logo AM capital.svg"
               alt="A&M Capital"
-              className="h-10 md:h-12"
+              width={32}
+              height={32}
               style={{ filter: "invert(1)" }}
             />
-          </a>
+          </Link>
           <div className="flex gap-2 mt-2 md:mt-0">
             <span className="bg-green-100 text-green-700 px-2 py-1 rounded">✔ Fiabilité</span>
             <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">✔ Transparence</span>

@@ -2,16 +2,18 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 import { cities } from "../rent-data/cities";
 
+type CityResult = {
+  city: string;
+  city_id: string;
+  nightlyPrice: number | null;
+};
 
 export async function GET() {
-  const results: any[] = [];
+  const results: CityResult[] = [];
 
-  // Parcours toutes les villes
   for (const city of cities) {
-    // Exemple : utiliser le code postal comme city_id fictif pour AirDNA
     const cityId = city.slug.split("-")[1]; // ex: "paris-75000" -> "75000"
 
-    // Calcul du mois dernier
     const now = new Date();
     let startYear = now.getFullYear();
     let startMonth = now.getMonth();
@@ -20,10 +22,9 @@ export async function GET() {
       startYear -= 1;
     }
 
-    // Appel AirDNA (POC avec clé fake)
-    const AIRDNA_API_KEY = process.env.AIRDNA_API_KEY
+    const AIRDNA_API_KEY = process.env.AIRDNA_API_KEY || "FAKE_TOKEN";
 
-    let nightlyPrice = null;
+    let nightlyPrice: number | null = null;
 
     try {
       const response = await axios.get(
@@ -43,11 +44,11 @@ export async function GET() {
           timeout: 5000,
         }
       );
-      // ici normalement response.data contiendrait le revenu mensuel, on calcule prix/nuit
-      nightlyPrice = response.data?.monthlyRevenue / 30 || null;
-    } catch (err) {
-      // return err;
-      
+      nightlyPrice = response.data?.monthlyRevenue
+        ? response.data.monthlyRevenue / 30
+        : null;
+    } catch (_err) {
+      // erreur ignorée volontairement
     }
 
     results.push({

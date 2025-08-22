@@ -1,6 +1,5 @@
 // app/city-comparison/page.tsx
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import ExportPDFButton from "@/components/ExportPDFButton";
 import ErrorMessage from "@/components/ErrorMessage";
 import CityComparisonChart from "@/components/CityComparisonChart";
 
