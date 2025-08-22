@@ -142,7 +142,7 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
     <div className="max-w-6xl mx-auto py-10 space-y-6" id="results-page">
       <h1 className="text-3xl font-bold">Résultats de la simulation</h1>
 
-      {/* Nút chức năng */}
+      {/* button group */}
       <div className="flex gap-4 mb-6">
         <Link href="/simulation" className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
           ← Retour au formulaire
@@ -156,7 +156,6 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
         </Link>
       </div>
       <div id="to-print" className="space-y-6">
-        {/* Dữ liệu, charts giống trước */}
         <Card>
           <CardHeader><CardTitle>Données saisies</CardTitle></CardHeader>
           <CardContent>
@@ -217,6 +216,17 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
             <BreakevenChart data={profitData} />
           </CardContent>
         </Card>
+        <div className="mt-8 text-sm text-gray-500 border-t pt-4">
+          <strong>Sources des données :</strong>
+          <ul className="list-disc ml-5 mt-2">
+            <li>
+              <span className="font-medium">Location courte durée :</span> API <a href="https://www.airdna.co/" target="_blank" rel="noopener noreferrer" className="underline">AirDNA</a>
+            </li>
+            <li>
+              <span className="font-medium">Location longue durée :</span> <a href="https://www.meilleursagents.com/" target="_blank" rel="noopener noreferrer" className="underline">MeilleursAgents</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
     </div>
