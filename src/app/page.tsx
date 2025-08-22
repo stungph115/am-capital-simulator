@@ -59,8 +59,15 @@ export default function Home() {
               </div>
             </div>
           ))}
+
         </div>
       )}
+      <div className="mt-8 text-sm text-gray-500 border-t pt-4">
+        <strong>Sources des données : </strong>
+        <span className="font-medium">Location courte durée :</span> API <a href="https://www.airdna.co/" target="_blank" rel="noopener noreferrer" className="underline">AirDNA</a>
+
+      </div>
+
 
       <Link
         href="/simulation"
