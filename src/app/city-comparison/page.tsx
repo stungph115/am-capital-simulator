@@ -7,8 +7,10 @@ import CityComparisonChart from "@/components/CityComparisonChart";
 export default async function CityComparisonPage() {
     // Example: fetch city rent data from your API
     let cityData: { city: string; apartment: number | null; house: number | null }[] = [];
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/rent-data`);
+        const res = await fetch(`${baseUrl}/api/rent-data`);
         const data = await res.json();
         cityData = data.results;
     } catch (err) {

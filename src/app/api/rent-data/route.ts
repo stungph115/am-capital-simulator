@@ -15,8 +15,7 @@ async function fetchCityRent(city: City) {
                 "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
                 "Cache-Control": "no-cache",
                 "Referer": "https://www.meilleursagents.com/prix-immobilier/",
-                "Cookie":
-                    "visitor_uuid=97f26aaf-bd75-48ea-bb7e-cccd281c1842; landing_page_template=prices/city; datadome=U4Vv1rmp34y4sAT8ZALoZlekGkEzEkP62SopivmP~AM9ybmmo3nq6py3DBBXLE4dqKvfBRqdtlEq11dGVrXSV3fcUUOR~HRdkUID7H1p2xfYMNuRSY6yJq5_SmGfDn2H; session=eyJhbmFseXRpY3NfdGFncyI6W10sIl9mcmVzaCI6ZmFsc2V9.aKhR6Q.Q1rCMMwmGFcOhi_9WeyiD6f1IlM"
+                "Cookie": process.env.HEADER_COOKIE || "",
             },
             timeout: 5000,
         });

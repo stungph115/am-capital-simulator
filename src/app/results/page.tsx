@@ -23,7 +23,9 @@ type CityDataAPI = {
 
 async function getCityData(city: string): Promise<CityDataAPI | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/rent-data`);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+    const res = await fetch(`${baseUrl}/api/rent-data`);
     const data = await res.json();
     return data.results.find(
       (c: CityDataAPI) => c.city.toLowerCase() === city.toLowerCase()
