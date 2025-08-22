@@ -185,7 +185,7 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
         {/* Résultats financiers + chart */}
         <Card>
           <CardHeader><CardTitle>Résultats financiers pour la location {mainLabel}</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-2 gap-6">
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <ul className="space-y-2 text-lg">
                 <li>📦 Investissement total : <b>{mainResult.totalInvestment.toLocaleString()} €</b></li>
@@ -207,6 +207,7 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
 
             <RentChart data={chartData} />
           </CardContent>
+
         </Card>
 
         {/* Breakeven chart */}
