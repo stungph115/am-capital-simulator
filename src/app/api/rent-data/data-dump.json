@@ -7,6 +7,12 @@
             "house": 28.7
         },
         {
+            "city": "Sceaux",
+            "city_id": "92330",
+            "apartment": 26.3,
+            "house": 22.6
+        },
+        {
             "city": "Lyon",
             "city_id": "69000",
             "apartment": 17,

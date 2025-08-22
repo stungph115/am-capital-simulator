@@ -6,6 +6,7 @@ export interface City {
 
 export const cities: City[] = [
   { name: "Paris", slug: "paris-75000", url: "/prix-immobilier/paris-75000/" },
+  { name: "Sceaux", slug: "sceax-92330", url: "/prix-immobilier/sceaux-92330/" },
   { name: "Lyon", slug: "lyon-69000", url: "/prix-immobilier/lyon-69000/" },
   { name: "Marseille", slug: "marseille-13000", url: "/prix-immobilier/marseille-13000/" },
   { name: "Toulouse", slug: "toulouse-31000", url: "/prix-immobilier/toulouse-31000/" },
