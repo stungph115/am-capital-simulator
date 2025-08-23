@@ -1,0 +1,311 @@
+{
+  "updatedAt": "2025-08-23T10:22:47.323Z",
+  "results": [
+    {
+      "city": "Paris",
+      "city_id": "75000",
+      "apartment": 32,
+      "house": 28.7
+    },
+    {
+      "city": "Sceaux",
+      "city_id": "92330",
+      "apartment": 22.6,
+      "house": 26.3
+    },
+    {
+      "city": "Lyon",
+      "city_id": "69000",
+      "apartment": 17,
+      "house": 15
+    },
+    {
+      "city": "Marseille",
+      "city_id": "13000",
+      "apartment": 16.1,
+      "house": 16.8
+    },
+    {
+      "city": "Toulouse",
+      "city_id": "31000",
+      "apartment": 14.9,
+      "house": 12.6
+    },
+    {
+      "city": "Nice",
+      "city_id": "06000",
+      "apartment": 20.1,
+      "house": 19.5
+    },
+    {
+      "city": "Nantes",
+      "city_id": "44000",
+      "apartment": 14.7,
+      "house": 13.2
+    },
+    {
+      "city": "Strasbourg",
+      "city_id": "67000",
+      "apartment": 15.2,
+      "house": 14
+    },
+    {
+      "city": "Montpellier",
+      "city_id": "34000",
+      "apartment": 15.8,
+      "house": 13.7
+    },
+    {
+      "city": "Bordeaux",
+      "city_id": "33000",
+      "apartment": 16.9,
+      "house": 15.3
+    },
+    {
+      "city": "Lille",
+      "city_id": "59000",
+      "apartment": 16,
+      "house": 11.8
+    },
+    {
+      "city": "Rennes",
+      "city_id": "35000",
+      "apartment": 14.9,
+      "house": 15.4
+    },
+    {
+      "city": "Reims",
+      "city_id": "51100",
+      "apartment": 13.4,
+      "house": 11.2
+    },
+    {
+      "city": "Le Havre",
+      "city_id": "havre",
+      "apartment": 13.3,
+      "house": 13
+    },
+    {
+      "city": "Saint-Étienne",
+      "city_id": "etienne",
+      "apartment": 11.7,
+      "house": 11
+    },
+    {
+      "city": "Toulon",
+      "city_id": "83000",
+      "apartment": 14.6,
+      "house": 17.2
+    },
+    {
+      "city": "Grenoble",
+      "city_id": "38000",
+      "apartment": 14.4,
+      "house": 15.1
+    },
+    {
+      "city": "Dijon",
+      "city_id": "21000",
+      "apartment": 13.3,
+      "house": 12.7
+    },
+    {
+      "city": "Nîmes",
+      "city_id": "30000",
+      "apartment": 12.7,
+      "house": 11
+    },
+    {
+      "city": "Angers",
+      "city_id": "49000",
+      "apartment": 13.8,
+      "house": 13
+    },
+    {
+      "city": "Villeurbanne",
+      "city_id": "69100",
+      "apartment": 15.8,
+      "house": 14.5
+    },
+    {
+      "city": "Le Mans",
+      "city_id": "mans",
+      "apartment": 12.2,
+      "house": 10.5
+    },
+    {
+      "city": "Aix-en-Provence",
+      "city_id": "en",
+      "apartment": 17.9,
+      "house": 17.4
+    },
+    {
+      "city": "Clermont-Ferrand",
+      "city_id": "ferrand",
+      "apartment": 12.4,
+      "house": 10.9
+    },
+    {
+      "city": "Brest",
+      "city_id": "29200",
+      "apartment": 12.3,
+      "house": 11.4
+    },
+    {
+      "city": "Tours",
+      "city_id": "37000",
+      "apartment": 13.7,
+      "house": 12.7
+    },
+    {
+      "city": "Limoges",
+      "city_id": "87000",
+      "apartment": 11.4,
+      "house": 10.2
+    },
+    {
+      "city": "Amiens",
+      "city_id": "80000",
+      "apartment": 13.7,
+      "house": 10.7
+    },
+    {
+      "city": "Perpignan",
+      "city_id": "66000",
+      "apartment": 12,
+      "house": 10.6
+    },
+    {
+      "city": "Metz",
+      "city_id": "57000",
+      "apartment": 13.6,
+      "house": 14.7
+    },
+    {
+      "city": "Boulogne-Billancourt",
+      "city_id": "billancourt",
+      "apartment": 29,
+      "house": 28.4
+    },
+    {
+      "city": "Besançon",
+      "city_id": "25000",
+      "apartment": 12.9,
+      "house": 13.5
+    },
+    {
+      "city": "Orléans",
+      "city_id": "45000",
+      "apartment": 13.3,
+      "house": 14.4
+    },
+    {
+      "city": "Mulhouse",
+      "city_id": "68100",
+      "apartment": 13.4,
+      "house": 14.8
+    },
+    {
+      "city": "Saint-Denis",
+      "city_id": "denis",
+      "apartment": 20.4,
+      "house": 19.7
+    },
+    {
+      "city": "Rouen",
+      "city_id": "76000",
+      "apartment": 14,
+      "house": 13.6
+    },
+    {
+      "city": "Argenteuil",
+      "city_id": "95100",
+      "apartment": 19,
+      "house": 21.2
+    },
+    {
+      "city": "Caen",
+      "city_id": "14000",
+      "apartment": 13.9,
+      "house": 14.7
+    },
+    {
+      "city": "Montreuil",
+      "city_id": "93100",
+      "apartment": 24.3,
+      "house": 25.4
+    },
+    {
+      "city": "Nancy",
+      "city_id": "54000",
+      "apartment": 13.8,
+      "house": 13.9
+    },
+    {
+      "city": "Roubaix",
+      "city_id": "59100",
+      "apartment": 13.9,
+      "house": 12
+    },
+    {
+      "city": "Tourcoing",
+      "city_id": "59200",
+      "apartment": 13.9,
+      "house": 12.3
+    },
+    {
+      "city": "Nanterre",
+      "city_id": "92000",
+      "apartment": 23,
+      "house": 30
+    },
+    {
+      "city": "Avignon",
+      "city_id": "84000",
+      "apartment": 13.2,
+      "house": 14
+    },
+    {
+      "city": "Vitry-sur-Seine",
+      "city_id": "sur",
+      "apartment": 19.9,
+      "house": 24.4
+    },
+    {
+      "city": "Créteil",
+      "city_id": "94000",
+      "apartment": 19.6,
+      "house": 23.9
+    },
+    {
+      "city": "Dunkerque",
+      "city_id": "59140",
+      "apartment": 12.5,
+      "house": 12.1
+    },
+    {
+      "city": "Poitiers",
+      "city_id": "86000",
+      "apartment": 12.5,
+      "house": 12.2
+    },
+    {
+      "city": "Asnières-sur-Seine",
+      "city_id": "sur",
+      "apartment": 24.3,
+      "house": 28.9
+    },
+    {
+      "city": "Versailles",
+      "city_id": "78000",
+      "apartment": 20.7,
+      "house": 24
+    },
+    {
+      "city": "Courbevoie",
+      "city_id": "92400",
+      "apartment": 25.7,
+      "house": 31.1
+    }
+  ]
+}

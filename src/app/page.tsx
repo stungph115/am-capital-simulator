@@ -3,6 +3,8 @@
 import Spinner from "@/components/LoadingSpinner";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import RefreshingSpinner from "@/components/RefreshingSpinner";
 
 type CityData = {
   city: string;
@@ -10,21 +12,58 @@ type CityData = {
   house: number | null;
 };
 
+type RentDataAPI = {
+  results: CityData[];
+  updatedAt: string | null;
+};
+
 export default function Home() {
   const [citiesData, setCitiesData] = useState<CityData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
+
+  //  load direct from localDB
+  const loadLocalData = async () => {
+    try {
+      const res = await axios.get<RentDataAPI>("/api/rent-data");
+      setCitiesData(res.data.results.slice(0, 8));
+      setUpdatedAt(res.data.updatedAt);
+      setLoading(false);
+    } catch (err) {
+      console.error("Erreur fetch localDB:", err);
+      setLoading(false);
+    }
+  };
+
+  //  refresh in bground
+  const refreshData = async () => {
+    try {
+      setRefreshing(true);
+      const res = await axios.post<RentDataAPI & { message?: string }>("/api/rent-data/refresh");
+      setCitiesData(res.data.results.slice(0, 8));
+      setUpdatedAt(res.data.updatedAt);
+    } catch (err) {
+      console.error("Refresh failed:", err);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    fetch("/api/rent-data")
-      .then((res) => res.json())
-      .then((data) => {
-        setCitiesData(data.results.slice(0, 8)); // top 8 villes
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+    // Load localDB directly
+    loadLocalData();
+
+    // Refresh first render
+    refreshData();
+
+    // Refresh every 2 minutes
+    const interval = setInterval(() => {
+      refreshData();
+    }, 2 * 60 * 1000);
+
+    // Cleanup when unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -36,38 +75,58 @@ export default function Home() {
         Location longue ou courte durée, avec données de marché en temps réel.
       </p>
 
-
       <h3 className="text-2xl font-semibold mb-6">Exemples de loyers moyens</h3>
 
       {loading ? (
-        <Spinner message="Chargement des donées..." />
+        <Spinner message="Chargement des données..." />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {citiesData.map((city) => (
-            <div
-              key={city.city}
-              className="p-4  bg-[#2c395c] dark:bg-gray-50 rounded-lg shadow flex flex-col gap-2 text-white dark:text-[#1a233a]"
-            >
-              <h4 className="font-bold text-lg">{city.city}</h4>
-              <div className="flex justify-between text-sm">
-                <span>Appartement:</span>
-                <span>{city.apartment ? city.apartment.toLocaleString() + " €/m²" : "N/A"}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Maison:</span>
-                <span>{city.house ? city.house.toLocaleString() + " €/m²" : "N/A"}</span>
-              </div>
-            </div>
-          ))}
+        <>
+          {refreshing && <RefreshingSpinner />}
 
-        </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {citiesData.map((city) => (
+              <div
+                key={city.city}
+                className="p-4 bg-[#2c395c] dark:bg-gray-50 rounded-lg shadow flex flex-col gap-2 text-white dark:text-[#1a233a]"
+              >
+                <h4 className="font-bold text-lg">{city.city}</h4>
+                <div className="flex justify-between text-sm">
+                  <span>Appartement:</span>
+                  <span>
+                    {city.apartment
+                      ? city.apartment.toLocaleString() + " €/m²"
+                      : "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Maison:</span>
+                  <span>
+                    {city.house ? city.house.toLocaleString() + " €/m²" : "N/A"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
+
       <div className="mt-8 text-sm text-gray-500 border-t pt-4">
-        <strong>Sources des données : </strong>
-        <span className="font-medium">Location courte durée :</span> API <a href="https://www.airdna.co/" target="_blank" rel="noopener noreferrer" className="underline">AirDNA</a>
-
+        <strong>Sources des données :</strong>{" "}
+        <span className="font-medium">Location courte durée :</span> API{" "}
+        <a
+          href="https://www.airdna.co/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          AirDNA
+        </a>
+        {updatedAt && (
+          <span className="ml-2 text-gray-400 dark:text-gray-500">
+            (Dernière mise à jour : {new Date(updatedAt).toLocaleString()})
+          </span>
+        )}
       </div>
-
 
       <Link
         href="/simulation"

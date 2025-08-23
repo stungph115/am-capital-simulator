@@ -1,18 +1,15 @@
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+import axios from "axios";
 import { computeAll } from "@/lib/calculation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RentChart from "@/components/RentChart";
 import BreakevenChart from "@/components/BreakEvenChart";
 import ExportPDFButton from "@/components/ExportPDFButton";
 import Link from "next/link";
-
-type SearchParams = {
-  price?: string;
-  surface?: string;
-  rooms?: "Studio" | "T2" | "T3" | "T4";
-  type?: "longue" | "courte";
-  city?: string;
-  propertyType?: "apartment" | "house";
-};
+import { useSearchParams } from "next/navigation";
+import RefreshingSpinner from "@/components/RefreshingSpinner";
 
 type CityDataAPI = {
   city: string;
@@ -21,40 +18,74 @@ type CityDataAPI = {
   house: number | null;
 };
 
-async function getCityData(city: string): Promise<CityDataAPI | null> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+type DBResponse = {
+  results: CityDataAPI[];
+  updatedAt: string | null;
+};
 
-    const res = await fetch(`${baseUrl}/api/rent-data`);
-    const data = await res.json();
-    return data.results.find(
-      (c: CityDataAPI) => c.city.toLowerCase() === city.toLowerCase()
-    ) || null;
-  } catch (err) {
-    console.error("Erreur fetch rent-data:", err);
-    return null;
-  }
-}
 type RoomType = "Studio" | "T2" | "T3" | "T4";
 
-async function getResults(
-  price: number,
-  surface: number,
-  rooms: RoomType,
-  rentPerM2: number,
-  nightlyPrice: number | null
-) {
-  const longue = computeAll({ price, surface, rooms: rooms, type: "longue", rentPerM2 });
-  const courte = computeAll({ price, surface, rooms: rooms, type: "courte", rentPerM2, nightlyPrice });
-  return { longue, courte };
-}
+export default function ResultatsPage() {
+  const [cityData, setCityData] = useState<CityDataAPI | null>(null);
+  const [dbUpdatedAt, setDbUpdatedAt] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-export default async function ResultatsPage({ searchParams }: { searchParams: SearchParams }) {
-  // Vérification des params requis
-  const requiredParams: Array<keyof SearchParams> = ["price", "surface", "rooms", "type", "city", "propertyType"];
-  const missingParams = requiredParams.filter(param => !searchParams[param]);
+  const searchParams = useSearchParams();
 
-  if (missingParams.length > 0) {
+  const price = searchParams.get("price");
+  const surface = searchParams.get("surface");
+  const rooms = searchParams.get("rooms") as RoomType | null;
+  const type = searchParams.get("type");
+  const city = searchParams.get("city");
+  const propertyType = searchParams.get("propertyType");
+
+  const fetchLocalData = useCallback(async () => {
+    try {
+      const res = await axios.get<DBResponse>("/api/rent-data");
+      const found = res.data.results.find(
+        (c) => c.city.toLowerCase() === city!.toLowerCase()
+      );
+      setCityData(found || null);
+      setDbUpdatedAt(res.data.updatedAt);
+    } catch (err) {
+      console.error("Erreur fetch rent-data:", err);
+      setCityData(null);
+    }
+  }, [city]);
+
+  const refreshData = useCallback(async () => {
+    if (!city) return;
+    try {
+      setRefreshing(true);
+      const res = await axios.post<DBResponse>("/api/rent-data/refresh");
+      const found = res.data.results.find(
+        (c) => c.city.toLowerCase() === city.toLowerCase()
+      );
+      setCityData(found || null);
+      setDbUpdatedAt(res.data.updatedAt);
+    } catch (err) {
+      console.error("Erreur refresh rent-data:", err);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [city]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchLocalData().finally(() => setLoading(false));
+    refreshData(); // refresh immediately
+
+    const interval = setInterval(() => {
+      refreshData();
+    }, 2 * 60 * 1000); // 2 minutes
+
+    return () => clearInterval(interval);
+  }, [fetchLocalData, refreshData]);
+
+  if (!price || !surface || !rooms || !type || !city || !propertyType) {
+    const requiredParams: string[] = ["price", "surface", "rooms", "type", "city", "propertyType"];
+    const missingParams = requiredParams.filter((param) => !searchParams.get(param));
     return (
       <div className="max-w-2xl mx-auto py-50 text-center space-y-4">
         <h1 className="text-2xl font-bold text-red-600">Paramètres manquants</h1>
@@ -71,15 +102,10 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
     );
   }
 
-  // Extraction des params déjà validés
-  const price = Number(searchParams.price);
-  const surface = Number(searchParams.surface);
-  const rooms = searchParams.rooms!;
-  const type = searchParams.type!;
-  const city = searchParams.city!;
-  const propertyType = searchParams.propertyType!;
+  if (loading) {
+    return <div className="text-center py-20 text-xl">Chargement des données...</div>;
+  }
 
-  const cityData = await getCityData(city);
   if (!cityData) {
     return (
       <div className="max-w-2xl mx-auto py-10">
@@ -99,52 +125,63 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
     );
   }
 
-  // Appel AirDNA
-  let nightlyPrice: number | null = null;
-  try {
-    const now = new Date();
-    let startYear = now.getFullYear();
-    let startMonth = now.getMonth();
-    if (startMonth === 0) {
-      startMonth = 12;
-      startYear -= 1;
-    }
-    const AIRDNA_API_KEY = process.env.AIRDNA_API_KEY;
-    const response = await fetch(
-      `https://api.airdna.co/client/v1/market/revenue/monthly?access_token=${AIRDNA_API_KEY}&start_year=${startYear}&start_month=${startMonth}&number_of_months=1&city_id=${cityData.city_id}&room_types=entire_place&bedrooms=2&currency=eur&percentiles=0.5`
-    );
-    const data = await response.json();
-    nightlyPrice = data?.monthlyRevenue ? data.monthlyRevenue / 30 : null;
-  } catch {
-    nightlyPrice = null;
-  }
+  const priceNum = Number(price);
+  const surfaceNum = Number(surface);
 
-  const { longue, courte } = await getResults(price, surface, rooms, rentPerM2, nightlyPrice);
+  const longueResult = computeAll({
+    price: priceNum,
+    surface: surfaceNum,
+    rooms,
+    type: "longue",
+    rentPerM2,
+  });
 
-  const mainResult = type === "longue" ? longue : courte;
-  const compareResult = type === "longue" ? courte : longue;
+  const courteResult = computeAll({
+    price: priceNum,
+    surface: surfaceNum,
+    rooms,
+    type: "courte",
+    rentPerM2,
+  });
+
+  const mainResult = type === "longue" ? longueResult : courteResult;
+  const compareResult = type === "longue" ? courteResult : longueResult;
   const mainLabel = type === "longue" ? "Longue durée" : "Courte durée";
   const compareLabel = type === "longue" ? "Courte durée" : "Longue durée";
 
   const chartData = [
-    { name: mainLabel, "Loyer mensuel brut": mainResult.monthlyBase, "Rendement brut annuel (%)": mainResult.grossYield * 100 },
-    { name: compareLabel, "Loyer mensuel brut": compareResult.monthlyBase, "Rendement brut annuel (%)": compareResult.grossYield * 100 },
+    {
+      name: mainLabel,
+      "Loyer mensuel brut": mainResult.monthlyBase,
+      "Rendement brut annuel (%)": mainResult.grossYield * 100,
+    },
+    {
+      name: compareLabel,
+      "Loyer mensuel brut": compareResult.monthlyBase,
+      "Rendement brut annuel (%)": compareResult.grossYield * 100,
+    },
   ];
 
-  const months = 120; // 10 ans
-  const profitData = Array.from({ length: months }, (_, i) => ({
-    month: i + 1,
-    "Longue durée": longue.netMonthly * (i + 1) - longue.totalInvestment,
-    "Courte durée": courte.netMonthly * (i + 1) - courte.totalInvestment,
-  }));
+  const months = 240; // 20 ans
+  const profitData: { month: number; "Longue durée": number; "Courte durée": number }[] = Array.from(
+    { length: months },
+    (_, i) => ({
+      month: i + 1,
+      "Longue durée": longueResult.netMonthly * (i + 1) - longueResult.totalInvestment,
+      "Courte durée": courteResult.netMonthly * (i + 1) - courteResult.totalInvestment,
+    })
+  );
 
   return (
-    <div className="max-w-6xl mx-auto py-10 space-y-6 animate-fadeIn" id="results-page">
-      <h1 className="text-3xl font-bold">Résultats de la simulation</h1>
-
+    <div className="max-w-6xl mx-auto py-10 space-y-6 animate-fadeIn">
+      <h1 className="text-3xl font-bold flex items-center gap-2">Résultats de la simulation</h1>
+      {refreshing && <RefreshingSpinner />}
       {/* button group */}
       <div className="flex gap-4 mb-6">
-        <Link href="/simulation" className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 dark:text-[#121f3e]">
+        <Link
+          href="/simulation"
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 dark:text-[#121f3e]"
+        >
           ← Retour au formulaire
         </Link>
         <ExportPDFButton />
@@ -155,81 +192,113 @@ export default async function ResultatsPage({ searchParams }: { searchParams: Se
           📩 <span>Contactez-nous</span>
         </Link>
       </div>
+
       <div id="to-print" className="space-y-6">
         <Card>
-          <CardHeader><CardTitle>Données saisies</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Données saisies</CardTitle>
+          </CardHeader>
           <CardContent>
             <ul className="space-y-2">
               <li>🏙️ Ville : <b>{city}</b></li>
-              <li>💰 Prix : <b>{price.toLocaleString()} €</b></li>
-              <li>📏 Surface : <b>{surface} m²</b></li>
+              <li>💰 Prix : <b>{priceNum.toLocaleString()} €</b></li>
+              <li>📏 Surface : <b>{surfaceNum} m²</b></li>
               <li>🛋️ Pièces : <b>{rooms}</b></li>
               <li>📌 Type sélectionné : <b>{mainLabel}</b></li>
-              <li>🏠 Type de bien : <b>{propertyType === "apartment" ? "Appartement" : "Maison"}</b></li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Frais annexes */}
-        <Card>
-          <CardHeader><CardTitle>Frais annexes</CardTitle></CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
-              <li>⚖️ Notaire : <b>{mainResult.fees.notary.toLocaleString()} €</b></li>
-              <li>🤝 Commission : <b>{mainResult.fees.commission.toLocaleString()} €</b></li>
-              <li>📐 Architecte : <b>{mainResult.fees.architect.toLocaleString()} €</b></li>
+              <li>
+                🏠 Type de bien : <b>{propertyType === "apartment" ? "Appartement" : "Maison"}</b>
+              </li>
             </ul>
           </CardContent>
         </Card>
 
         {/* Résultats financiers + chart */}
         <Card>
-          <CardHeader><CardTitle>Résultats financiers pour la location {mainLabel}</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Résultats financiers pour la location {mainLabel}</CardTitle>
+          </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <ul className="space-y-2 text-lg">
-                <li>📦 Investissement total : <b>{mainResult.totalInvestment.toLocaleString()} €</b></li>
-                <li>📈 Loyer mensuel brut : <b>{mainResult.monthlyBase.toFixed(0)} €</b></li>
-                <li>💸 Loyer mensuel net (~95%) : <b>{mainResult.netMonthly.toFixed(0)} €</b></li>
-                <li>📊 Rendement brut annuel : <b>{(mainResult.grossYield * 100).toFixed(2)} %</b></li>
+                <li>
+                  📦 Investissement total : <b>{mainResult.totalInvestment.toLocaleString()} €</b>
+                </li>
+                <li>
+                  📈 Loyer mensuel brut : <b>{mainResult.monthlyBase.toFixed(0)} €</b>
+                </li>
+                <li>
+                  💸 Loyer mensuel net (~95%) : <b>{mainResult.netMonthly.toFixed(0)} €</b>
+                </li>
+                <li>
+                  📊 Rendement brut annuel : <b>{(mainResult.grossYield * 100).toFixed(2)} %</b>
+                </li>
               </ul>
 
               <div className="mt-4 p-4 rounded bg-gray-50 text-sm dark:text-[#1a233a]">
                 <h3 className="font-semibold mb-2">Comparaison avec {compareLabel}</h3>
                 <ul className="space-y-1">
-                  <li>📦 Investissement total : <b>{compareResult.totalInvestment.toLocaleString()} €</b></li>
-                  <li>📈 Loyer mensuel brut : <b>{compareResult.monthlyBase.toFixed(0)} €</b></li>
-                  <li>💸 Loyer mensuel net (~95%) : <b>{compareResult.netMonthly.toFixed(0)} €</b></li>
-                  <li>📊 Rendement brut annuel : <b>{(compareResult.grossYield * 100).toFixed(2)} %</b></li>
+                  <li>
+                    📦 Investissement total : <b>{compareResult.totalInvestment.toLocaleString()} €</b>
+                  </li>
+                  <li>
+                    📈 Loyer mensuel brut : <b>{compareResult.monthlyBase.toFixed(0)} €</b>
+                  </li>
+                  <li>
+                    💸 Loyer mensuel net (~95%) : <b>{compareResult.netMonthly.toFixed(0)} €</b>
+                  </li>
+                  <li>
+                    📊 Rendement brut annuel : <b>{(compareResult.grossYield * 100).toFixed(2)} %</b>
+                  </li>
                 </ul>
               </div>
             </div>
 
             <RentChart data={chartData} />
           </CardContent>
-
         </Card>
 
-        {/* Breakeven chart */}
         <Card>
-          <CardHeader><CardTitle>Graphiques de rentabilité</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Graphiques de rentabilité</CardTitle>
+          </CardHeader>
           <CardContent>
             <BreakevenChart data={profitData} />
           </CardContent>
         </Card>
+
         <div className="mt-8 text-sm text-gray-500 border-t pt-4">
           <strong>Sources des données :</strong>
           <ul className="list-disc ml-5 mt-2">
             <li>
-              <span className="font-medium">Location courte durée :</span> API <a href="https://www.airdna.co/" target="_blank" rel="noopener noreferrer" className="underline">AirDNA</a>
+              <span className="font-medium">Location courte durée :</span> API{" "}
+              <a
+                href="https://www.airdna.co/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                AirDNA
+              </a>
             </li>
             <li>
-              <span className="font-medium">Location longue durée :</span> <a href="https://www.meilleursagents.com/" target="_blank" rel="noopener noreferrer" className="underline">MeilleursAgents</a>
+              <span className="font-medium">Location longue durée :</span>{" "}
+              <a
+                href="https://www.meilleursagents.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                MeilleursAgents
+              </a>
             </li>
           </ul>
+          {dbUpdatedAt && (
+            <p className="mt-1 text-xs text-gray-400">
+              Dernière mise à jour : {new Date(dbUpdatedAt).toLocaleString()}
+            </p>
+          )}
         </div>
       </div>
-
     </div>
   );
 }
