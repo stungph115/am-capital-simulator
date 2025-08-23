@@ -38,7 +38,7 @@ Démo publique sur : <https://am-capital-simulator-two.vercel.app/>
 - **Load spinner** : affichage d’un spinner lors du chargement des données (appel API).  
 - **Backup des données** : fallback sur un dump local si l’API ne répond pas, garantissant l’affichage des résultats.  
 - **Optimisation mobile** :  
-  - Affichage “clone” des cartes et graphiques avec swipe horizontal  
+  - Affichage en **colonne unique** des cartes et graphiques pour une lecture verticale facile  
   - Menu burger à la place de la barre de navigation classique  
   - Interface responsive pour un confort sur smartphone et tablette
 
