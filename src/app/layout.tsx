@@ -29,7 +29,6 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
-        <head>
           {/* Google Analytics */}
           <Script
             src="https://www.googletagmanager.com/gtag/js?id=G-NH49004L1Y"
@@ -43,7 +42,6 @@ export default function RootLayout({
             gtag('config', 'G-NH49004L1Y');
           `}
           </Script>
-        </head>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-[#121f3e] dark:text-white`}
