@@ -8,8 +8,8 @@ Démo publique sur : <https://am-capital-simulator-two.vercel.app/>
 ## Stack technique
 
 - **Frontend**
-  - Next.js 14 (App Router, Server Components)
-  - React 18 & TypeScript
+  - Next.js 15 (App Router, Server Components)
+  - React 19 & TypeScript
   - TailwindCSS (UI)
   - Recharts (graphiques)
 
