@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 
-const DATA_FILE = path.join("src/app/api/rent-data/data-rent.json");
+const DATA_FILE = path.join(process.cwd(), "src/app/api/rent-data/data-rent.json");
 
 async function readLocalDB() {
   try {
