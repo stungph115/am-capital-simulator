@@ -11,7 +11,7 @@ type CityRentData = {
     house: number | null;
 };
 
-const DATA_FILE = path.join("/tmp", "data-rent.json");
+const DATA_FILE = path.join(process.cwd(), "src/app/api/rent-data/data-rent.json");
 
 async function readLocalDB() {
     try {
