@@ -41,13 +41,13 @@ export function computeAll({ price, surface, rooms, type, rentPerM2, nightlyPric
     }
 
     // Frais
-    const notary = price * 0.09;
-    const commission = price * 0.085;
-    const architect = surface * (type === 'longue' ? 90 : 120);
+    const notary = price * 0.09; //frais de notaire 9% 
+    const commission = price * 0.085; // frais agence 8.5%
+    const architect = surface * (type === 'longue' ? 90 : 120); // frais travaux 90€/m² (longue) ou 120€/m² (courte)
     const totalInvestment = price + notary + commission + architect;
 
     const netMonthly = monthlyBase * 0.95;
-    const grossYield = (monthlyBase * 12) / totalInvestment;
+    const grossYield = (monthlyBase * 12) / totalInvestment; // rendement brut annuel
 
     return { monthlyBase, netMonthly, grossYield, fees: { notary, commission, architect }, totalInvestment };
 }

@@ -13,7 +13,7 @@ export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); //empêche le formulaire de recharger la page.
     setStatus("sending");
 
     try {

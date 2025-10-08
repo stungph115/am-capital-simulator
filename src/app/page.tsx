@@ -112,14 +112,14 @@ export default function Home() {
 
       <div className="mt-8 text-sm text-gray-500 border-t pt-4">
         <strong>Sources des données :</strong>{" "}
-        <span className="font-medium">Location courte durée :</span> API{" "}
+        <span className="font-medium">Location longue durée :</span>{" "}
         <a
-          href="https://www.airdna.co/"
+          href="https://www.meilleursagents.com/"
           target="_blank"
           rel="noopener noreferrer"
           className="underline"
         >
-          AirDNA
+          MeilleursAgents
         </a>
         {updatedAt && (
           <span className="ml-2 text-gray-400 dark:text-gray-500">

@@ -89,7 +89,7 @@ export default function ResultatsPage() {
     return (
       <div className="max-w-2xl mx-auto py-50 text-center space-y-4">
         <h1 className="text-2xl font-bold text-red-600">Paramètres manquants</h1>
-        <p className="text-gray-700">
+        <p className="text-gray-700 dark:text-gray-300">
           Les paramètres suivants sont requis : {missingParams.join(", ")}.
         </p>
         <Link
@@ -142,6 +142,7 @@ export default function ResultatsPage() {
     rooms,
     type: "courte",
     rentPerM2,
+    //ajouter data Airdna ici plus tard
   });
 
   const mainResult = type === "longue" ? longueResult : courteResult;

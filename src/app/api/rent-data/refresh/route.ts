@@ -89,7 +89,7 @@ export async function POST() {
     for (let i = 0; i < cities.length; i++) {
         const city = cities[i];
         const data = await fetchCityRent(city);
-        // fallback giữ dữ liệu cũ nếu scrape lỗi
+        // fallback old data if scraping failed
         const fallback = localDB.results[i];
         results.push({
             city: data.city,
